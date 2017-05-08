@@ -94,6 +94,53 @@ void bubleSort(int X[], int n)
     }
 }
 
+void quickSort(int X[], int left, int right)
+{
+    if(left < right) // Phân đoạn chỉ thực hiên khi có 2 p.tử trở lên
+    {
+        int i = left; // Cho i chạy từ đầu để tí so sánh với khoa
+        int j = right; // Cho j chạy từ cuối để tí so sánh với khóa
+        int m = (i + j) / 2; // Thằng này nằm giữa i và j để tí chọn p.tử có chỉ số này làm khóa
+        int k = X[m]; // Chọn thằng có chỉ số nằm giữa i và j làm khóa
+        while(i <= j) //  đặt tên là vòng while lớn
+        {
+            while(X[i] < k) i++; // Việc này dẽ dừng khi tìm được thằng lớn hơn khóa
+            while(X[j] > k) j--; // Việc này sẽ dừng khi tìm được thằng nhỏ hơn khóa
+            /*
+            * Ở đây ta sắp xếp tăng dần nên sẽ tìm những thằng lớn hơn khóa sẽ đẩy về sau khóa
+            * Còn thằng nhỏ hơn thì đẩy về trước khóa
+            * Mục đích của mình là sẽ cho thằng lớn hơn khóa đứng về bên phải khóa, còn nhỏ hơn khóa sẽ đứng bên trái khóa
+            * Sau đó ta lại phân đoạn ở sau khóa và trước để sắp xếp tiếp, nó sẽ dừng khi đoạn còn 1 p.tử
+            * Ở đây sắp xếp tăng dần còn nếu giảm dần sẽ tìm thằng nhỏ hơn khóa đẩy ra sau khóa, tức là while(X[i] > k) thì i++ và
+            * thằng lớn hơn thì đẩy về trước khóa tức là while(X[j] < k) j--;
+            */
+            if(i <= j)
+            /*
+            * Tại sao lại có dấu bằng ???
+            * Ta để ý cái vòng while thứ nhất, nó sẽ dừng khi thằng X[i] > khóa hoặc X[i] = khóa
+            * Tương tự vòng while hai sẽ dừng khi thằng X[j] <  khóa hoặc X[j] = khóa
+            * Vậy dấu bằng của mình là rơi vào TH xấu nhất là sau khi chạy 2 vòng while thì i = j để bằng nhau
+            * các dòng code dưới là để đổi chổ và tăng i và giảm j, nếu  i = j thì đổi chỗ cũng như k đổi chỗ
+            * quan trọng là cái tăng i và giảm j thì sau đó i > j và sẽ không thỏa mãn điều kiện i  <= j ở vòng while lớn
+            * để rồi sau đó phân đoạn
+            */
+            {
+                int temp = X[i];
+                X[i] = X[j];
+                X[j] = temp;
+                i++;
+                j--;
+            }
+        }
+        quickSort(X,left,j); // đây là đoạn 1 đi, từ thằng phần tử đầu đến thằng j sau khi ta thực hiện ở trên
+        quickSort(X,i,right); // đây là đoạn 2, từ i đến thằng cuối
+        /*
+        * Ở việc phân đoạn trên sẽ có khi đoạn 1 hoặc đoạn 2 chỉ có 1 phần tử, mà nếu 1 phần tử sẽ không làm, thì cũng k ảnh hưởng gì hết
+        * nói để các bạn hiểu thôi chứ không 1 số bạn sẽ nhầm là 2 đoạn trên phải bằng nhau, tùy mảng và tùy cái khóa nhé
+        */
+    }
+}
+
 void xuat(int X[], int n)
 {
     for(int i = 0; i < n; i++)
@@ -108,7 +155,8 @@ int main()
     cout << "\nMang sau khi sap xep" << endl;
     //selectSort(X,n);
     //insertSort(X,n);
-    bubleSort(X,n);
+    //bubleSort(X,n);
+    quickSort(X,0,9);
     xuat(X,n);
 
     return 0;
